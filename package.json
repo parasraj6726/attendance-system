@@ -1,0 +1,17 @@
+{
+  "name": "duty-attendance",
+  "version": "1.0.0",
+  "description": "Login-based attendance for Bhopal, RKMP, Nishatpura and DRM Office",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^12.11.1",
+    "express": "^4.22.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

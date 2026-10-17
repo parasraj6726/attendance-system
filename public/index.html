@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Duty Attendance</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#f2f4f8;--card:#fff;--ink:#0f1b3d;--mute:#5d6b86;--line:#e3e8f0;--hdr:#0f1b3d;--amber:#f5a524;--okS:#0f8a4f;--ok:#0f8a4f;--okbg:#dcf5e8;--rest:#a35a00;--restbg:#fdebc8;--lv:#4b47b8;--lvbg:#e6e5fb;--no:#c0352b;--nobg:#fde4e1;--sh:0 1px 2px #0f1b3d12,0 6px 18px #0f1b3d12}
+@media(prefers-color-scheme:dark){:root{--bg:#0a1020;--card:#131c33;--ink:#e9eefb;--mute:#93a0bd;--line:#22304f;--hdr:#0d1630;--okS:#1fa866;--ok:#5fd69b;--okbg:#12392a;--rest:#f5b95c;--restbg:#3b2c0f;--lv:#aaa8ff;--lvbg:#26264d;--no:#ff8f86;--nobg:#43201f}}
+*{box-sizing:border-box}html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Manrope,"Segoe UI",system-ui,sans-serif;max-width:640px;margin-inline:auto;padding:0 0 48px;-webkit-font-smoothing:antialiased}
+header{background:var(--hdr);color:#fff;padding:16px 16px 28px;border-radius:0 0 22px 22px;position:sticky;top:0;z-index:5;box-shadow:0 10px 24px #0f1b3d30}
+header::after{content:"";position:absolute;left:20px;right:20px;bottom:9px;height:3px;border-radius:3px;background:repeating-linear-gradient(90deg,var(--amber) 0 12px,transparent 12px 20px);background-size:20px 3px;animation:trk 1s linear infinite}
+.t{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+#clk{font-size:38px;font-weight:800;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+#clk b{font-weight:800;animation:blink 1s steps(2,start) infinite}#clk small{font-size:13px;opacity:.7;margin-left:6px}
+.w2{margin-top:8px;font-weight:700}#dt{font-size:13px;opacity:.8}
+.so{background:#ffffff1f;border:0;color:#fff;border-radius:99px;padding:6px 14px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.tabs{display:flex;gap:4px;margin-top:12px;background:#ffffff1a;padding:4px;border-radius:14px}
+.tabs button{flex:1;border:0;background:none;color:#fff;font:inherit;font-weight:800;padding:9px 2px;border-radius:11px;cursor:pointer}
+.tabs button[aria-pressed=true]{background:var(--amber);color:#0f1b3d}
+main{padding:16px}
+.enter>*{animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+.enter>*:nth-child(2){animation-delay:.07s}.enter>*:nth-child(3){animation-delay:.14s}.enter>*:nth-child(4){animation-delay:.21s}
+.card{background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--sh);margin-bottom:12px}
+.hero{text-align:center;padding:26px 16px}.hero .s{font-size:20px;font-weight:800;margin-bottom:16px}
+.live::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--okS);margin-right:8px;animation:blink 1.4s infinite}
+.btn{border:0;border-radius:14px;padding:12px 18px;font:inherit;font-weight:800;background:var(--okS);color:#fff;cursor:pointer;box-shadow:0 4px 12px #0f8a4f40;text-decoration:none;display:inline-block}
+.btn.out{background:transparent;color:#2f4bd0;border:2px solid #2f4bd0;box-shadow:none}
+@media(prefers-color-scheme:dark){.btn.out{color:#7b93ff;border-color:#7b93ff}}
+.big{font-size:20px;padding:18px 40px;width:100%;max-width:320px}.btn:active{transform:scale(.97)}
+.lk{background:var(--bg);border:0;color:var(--mute);font:inherit;font-size:12px;font-weight:700;padding:5px 11px;border-radius:99px;margin:6px 6px 0 0;cursor:pointer}
+.lk.d{color:var(--no)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:12px 0}
+.c{aspect-ratio:1;border-radius:9px;display:grid;place-items:center;font-size:12px;font-weight:800;font-style:normal;background:var(--line);color:var(--mute)}
+.c.P{background:var(--okbg);color:var(--ok)}.c.R{background:var(--restbg);color:var(--rest)}.c.L{background:var(--lvbg);color:var(--lv)}.c.A{background:var(--nobg);color:var(--no)}
+.tot{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);font-weight:700}.tot b{color:var(--ink)}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.chip{border:0;border-radius:12px;padding:8px 2px;background:var(--card);color:var(--ink);font:inherit;font-weight:800;font-size:12.5px;box-shadow:var(--sh);cursor:pointer}
+.chip small{display:block;font-weight:600;color:var(--mute);font-size:11px}.chip[aria-pressed=true]{background:var(--amber);color:#0f1b3d}.chip[aria-pressed=true] small{color:#0f1b3d}
+.row{background:var(--card);border-radius:16px;border-left:5px solid var(--line);padding:12px;margin-bottom:10px;box-shadow:var(--sh)}
+.row.P{border-color:var(--okS)}.row.R{border-color:var(--amber)}.row.L{border-color:var(--lv)}.row.A{border-color:var(--no)}
+.row b{font-size:16px}.row span.m{font-size:13px;color:var(--mute)}
+.pill{display:inline-block;font-size:11.5px;font-weight:800;border-radius:99px;padding:2px 9px;margin:4px 6px 0 0;background:var(--bg);color:var(--mute)}
+.pill.P{background:var(--okbg);color:var(--ok)}.pill.R{background:var(--restbg);color:var(--rest)}.pill.L{background:var(--lvbg);color:var(--lv)}.pill.A{background:var(--nobg);color:var(--no)}
+input,select{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;margin-bottom:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--sh)}
+th,td{padding:10px;text-align:left;border-bottom:1px solid var(--line)}th{font-size:12px;color:var(--mute);background:var(--bg)}tr.sec td{background:var(--bg);font-weight:800;color:var(--mute);font-size:12px}
+.login{padding:56px 24px;max-width:380px;margin:auto;animation:up .6s both}.login h1{margin:0 0 4px;font-size:28px}.login p{color:var(--mute);margin:0 0 22px}.login .btn{width:100%}
+.empty{text-align:center;color:var(--mute);padding:28px;border:2px dashed var(--line);border-radius:16px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--hdr);color:#fff;padding:10px 18px;border-radius:99px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:9}#toast.show{opacity:1;transform:translate(-50%,0)}
+@keyframes trk{to{background-position:20px 0}}@keyframes up{from{opacity:0;transform:translateY(16px)}}@keyframes blink{50%{opacity:.25}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head>
+<body><div id="app"></div><div id="toast" role="status"></div>
+<script>
+const SEC=["Bhopal","RKMP","Nishatpura","DRM Office"],DN=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const $=s=>document.querySelector(s),esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let me=null,S={view:"today",sec:SEC[0],date:"",mon:""};
+const hm=t=>t?new Date(t).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"–";
+const hrs=(a,b)=>{if(!a||!b)return "–";const m=Math.round((b-a)/6e4);return Math.floor(m/60)+"h "+m%60+"m"};
+const toast=t=>{const e=$("#toast");e.textContent=t;e.className="show";clearTimeout(toast.t);toast.t=setTimeout(()=>e.className="",2600)};
+async function api(p,method,body){
+  const r=await fetch("/api"+p,{method:method||"GET",headers:body?{"Content-Type":"application/json"}:{},body:body?JSON.stringify(body):undefined});
+  const j=await r.json().catch(()=>({}));
+  if(r.status===401&&p!=="/login"){me=null;loginView();throw j}
+  if(!r.ok){toast(j.error||"Something went wrong");throw j}return j}
+function tick(){const d=new Date(),h=d.getHours(),c=$("#clk");if(c)c.innerHTML=String(h%12||12).padStart(2,"0")+"<b>:</b>"+String(d.getMinutes()).padStart(2,"0")+"<small>"+(h<12?"AM":"PM")+"</small>";const t=$("#dt");if(t)t.textContent=d.toLocaleDateString([],{weekday:"long",day:"numeric",month:"long",year:"numeric"})}
+setInterval(tick,1000);
+function shell(body,tabs){
+  $("#app").innerHTML=`<header><div class="t"><div id="clk"></div><button class="so" id="lo">Sign out</button></div><div class="w2">${esc(me.name)} · ${me.role==="admin"?"Admin":esc(me.section||"")}</div><div id="dt"></div>${tabs||""}</header><main class="enter">${body}</main>`;
+  $("#lo").onclick=async()=>{try{await api("/logout","POST")}catch(e){}me=null;loginView()};tick()}
+function loginView(){
+  $("#app").innerHTML=`<div class="login"><h1>Duty Attendance</h1><p>Sign in with your employee ID and PIN</p><input id="id" placeholder="Employee ID" autocapitalize="off" autocomplete="username"><input id="pin" type="password" inputmode="numeric" placeholder="PIN" autocomplete="current-password"><button class="btn" id="go">Sign in</button></div>`;
+  const go=async()=>{try{await api("/login","POST",{empId:$("#id").value.trim(),pin:$("#pin").value});boot()}catch(e){}};
+  $("#go").onclick=go;$("#pin").onkeydown=e=>{if(e.key==="Enter")go()}}
+async function boot(){try{const d=await api("/me");me=d.user;S.date=d.date;S.mon=d.date.slice(0,7);me.role==="admin"?adminView():empView(d)}catch(e){}}
+
+function empView(d){
+  const r=d.rec,k=d.status,open=r&&!r.out_at;let s,b;
+  if(open){s=`<span class="live">On duty since ${hm(r.in_at)}${r.date<d.date?" (yesterday)":""}</span>`;b=`<button class="btn out big" id="act">Check out</button>`}
+  else if(r){s=`Done · ${hm(r.in_at)} to ${hm(r.out_at)} · ${hrs(r.in_at,r.out_at)}`;b=""}
+  else if(k==="L"){s="You are on leave today";b=""}
+  else{s=k==="R"?"Rest day":"Not checked in";b=`<button class="btn big" id="act">Check in</button>`}
+  const m=d.month,t=m?m.t:{P:0,R:0,L:0,A:0,h:0};
+  shell(`<div class="card hero"><div class="s">${s}</div>${b}</div>
+  <div class="card"><b>This month</b><div class="grid">${m?m.cells.map((c,i)=>`<i class="c ${c}">${i+1}</i>`).join(""):""}</div>
+  <div class="tot"><span>Present <b>${t.P}</b></span><span>Rest <b>${t.R}</b></span><span>Leave <b>${t.L}</b></span><span>Absent <b>${t.A}</b></span></div></div>`);
+  const a=$("#act");if(a)a.onclick=async()=>{a.disabled=true;try{await api(open?"/checkout":"/checkin","POST");toast(open?"Checked out":"Checked in");boot()}catch(e){a.disabled=false}}}
+
+function adminView(){
+  const tabs=`<div class="tabs">${[["today","Today"],["staff","Staff"],["month","Month & salary"]].map(([v,l])=>`<button data-v="${v}" aria-pressed="${S.view===v}">${l}</button>`).join("")}</div>`;
+  shell(`<div class="card empty">Loading…</div>`,tabs);
+  (S.view==="today"?aToday:S.view==="staff"?aStaff:aMonth)()}
+const body=h=>{$("main").className="";void $("main").offsetWidth;$("main").className="enter";$("main").innerHTML=h};
+
+async function aToday(){
+  const d=await api("/admin/day?date="+S.date);S.date=d.date;
+  const of=s=>d.rows.filter(x=>x.section===s),inn=s=>of(s).filter(x=>x.status==="P"||x.open).length,rows=of(S.sec);
+  body(`<input type="date" id="dp" value="${S.date}"><div class="chips">${SEC.map(s=>`<button class="chip" data-s="${s}" aria-pressed="${s===S.sec}">${s}<small>${inn(s)}/${of(s).length} in</small></button>`).join("")}</div>`+
+  (rows.length?rows.map(x=>{const r=x.rec,on=r&&!r.out_at;
+    const p=on?`<span class="pill P">On duty since ${hm(r.in_at)}${x.open?" (earlier day)":""}</span>`:r?`<span class="pill P">In ${hm(r.in_at)} · Out ${hm(r.out_at)} · ${hrs(r.in_at,r.out_at)}</span>`:
+      x.status==="R"?`<span class="pill R">Rest</span>`:x.status==="L"?`<span class="pill L">Leave</span>`:x.status==="A"?`<span class="pill A">Absent</span>`:`<span class="pill">Not in</span>`;
+    return `<div class="row ${on?"P":x.status}"><b>${esc(x.name)}</b> <span class="m">${esc(x.empId)}</span><br>${p}<br>
+    <button class="lk" data-a="rest" data-id="${x.id}">Give rest</button><button class="lk" data-a="leave" data-id="${x.id}">Mark leave</button><button class="lk" data-a="times" data-id="${x.id}">Set times</button><button class="lk d" data-a="clear" data-id="${x.id}">Clear</button></div>`}).join(""):
+    `<div class="empty">No one in ${esc(S.sec)} yet. Add people in the Staff tab.</div>`));
+}
+async function aStaff(){
+  const u=await api("/admin/users"),ro=`<option value="">No weekly rest</option>`+DN.map((n,i)=>`<option value="${i}">${n}</option>`).join("");
+  body(`<div class="card"><b>Add employee</b><div style="height:10px"></div><input id="n" placeholder="Full name"><div class="two"><input id="e" placeholder="Employee ID" autocapitalize="off"><input id="p" placeholder="PIN (4 to 8 digits)" inputmode="numeric"></div>
+  <div class="two"><select id="sc">${SEC.map(s=>`<option ${s===S.sec?"selected":""}>${s}</option>`).join("")}</select><select id="r">${ro}</select></div>
+  <label class="m" style="font-size:13px;color:var(--mute)">Attendance counts from</label><input type="date" id="sn" value="${S.date}"><button class="btn" id="add" style="width:100%">Add employee</button></div>`+
+  SEC.map(s=>{const l=u.filter(x=>x.section===s);return `<div class="m" style="font-weight:800;color:var(--mute);margin:14px 2px 8px">${s} (${l.length})</div>`+(l.map(x=>`<div class="row"><b>${esc(x.name)}</b> <span class="m">${esc(x.empId)}</span><br>
+    <select data-rs="${x.id}" style="margin:8px 0 0;padding:9px">${ro.replace(`value="${x.rest}"`,`value="${x.rest}" selected`)}</select>
+    <button class="lk" data-a="pin" data-id="${x.id}">Reset PIN</button><button class="lk d" data-a="rm" data-id="${x.id}">Remove</button></div>`).join("")||`<div class="empty">Nobody yet</div>`)}).join("")+
+  `<div class="card" style="margin-top:18px"><b>Your admin PIN</b><div style="height:10px"></div><input id="ap" placeholder="New PIN (4 to 8 digits)" inputmode="numeric"><button class="btn out" id="apb">Change my PIN</button></div>`);
+  $("#add").onclick=async()=>{try{await api("/admin/users","POST",{name:$("#n").value,empId:$("#e").value.trim(),pin:$("#p").value,section:$("#sc").value,rest:$("#r").value,since:$("#sn").value});toast("Added");aStaff()}catch(e){}};
+  $("#apb").onclick=async()=>{try{await api("/admin/password","POST",{pin:$("#ap").value});toast("PIN changed");$("#ap").value=""}catch(e){}}}
+async function aMonth(){
+  const d=await api("/admin/month?month="+S.mon);S.mon=d.mon;let last="";
+  body(`<input type="month" id="mp" value="${S.mon}"><a class="btn" href="/api/admin/month.csv?month=${S.mon}" style="width:100%;text-align:center;margin-bottom:12px">Download month (all sections, one file)</a>`+
+  (d.rows.length?`<table><tr><th>Name</th><th>P</th><th>R</th><th>L</th><th>A</th><th>Hrs</th></tr>${d.rows.map(r=>{const h=r.section!==last?`<tr class="sec"><td colspan="6">${esc(r.section)}</td></tr>`:"";last=r.section;return h+`<tr><td>${esc(r.name)}</td><td>${r.P}</td><td>${r.R}</td><td>${r.L}</td><td>${r.A}</td><td>${r.h}</td></tr>`}).join("")}</table>
+  <p class="m" style="font-size:12px;color:var(--mute)">P present, R rest, L leave, A absent. Today and future days are not counted.</p>`:`<div class="empty">No staff for this month.</div>`))}
+
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("[data-v],[data-s],[data-a]");if(!b||!me||me.role!=="admin")return;const D=b.dataset;
+  try{
+    if(D.v){S.view=D.v;adminView();return}
+    if(D.s){S.sec=D.s;S.view==="today"&&aToday();return}
+    const id=Number(D.id),mark=async(o)=>{await api("/admin/mark","POST",{userId:id,date:S.date,...o});aToday()};
+    if(D.a==="rest")await mark({status:"rest"});
+    else if(D.a==="leave")await mark({status:"leave"});
+    else if(D.a==="clear"){if(confirm("Clear this entry?"))await mark({status:"clear"})}
+    else if(D.a==="times"){const a=prompt("In time, 24-hour HH:MM (for example 06:30)");if(!a)return;const o=prompt("Out time HH:MM. Leave empty if still on duty.")||"";await mark({status:"present",inTime:a.trim(),outTime:o.trim()})}
+    else if(D.a==="pin"){const p=prompt("New PIN for this employee (4 to 8 digits)");if(!p)return;await api("/admin/users/"+id,"PATCH",{pin:p});toast("PIN reset")}
+    else if(D.a==="rm"){if(confirm("Remove this employee? Past attendance stays in monthly reports.")){await api("/admin/users/"+id,"DELETE");toast("Removed");aStaff()}}
+  }catch(x){}});
+document.addEventListener("change",async e=>{const t=e.target;if(!me||me.role!=="admin")return;
+  try{if(t.id==="dp"&&t.value){S.date=t.value;aToday()}
+  else if(t.id==="mp"&&t.value){S.mon=t.value;aMonth()}
+  else if(t.dataset.rs!==undefined){await api("/admin/users/"+t.dataset.rs,"PATCH",{rest:t.value});toast("Rest day updated")}}catch(x){}});
+boot();
+</script></body></html>
